@@ -1,43 +1,6 @@
-## ==> GUI FILE
-from PySide2 import QtCore
-from PySide2.QtCore import QPropertyAnimation
 
 
-from ui_main import Ui_MainWindow
-
-class UIFunctions(Ui_MainWindow):
-
-    def toggleMenu(self, maxWidth, enable):
-        if enable:
-
-            # GET WIDTH
-            width = self.ui.frame_left_menu.width()
-            maxExtend = maxWidth
-            standard = 70
-
-            # SET MAX WIDTH
-            if width == 70:
-                widthExtended = maxExtend
-            else:
-                widthExtended = standard
-
-            # ANIMATION
-            self.animation = QPropertyAnimation(self.ui.frame_left_menu, b"minimumWidth")
-            self.animation.setDuration(400)
-            self.animation.setStartValue(width)
-            self.animation.setEndValue(widthExtended)
-            self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
-            self.animation.start()
-
-'''
-
-
-
-
-
-
-
-      ## ARRAY mas_GPA_paid11
+         ## ARRAY mas_GPA_paid11
         ############################################################
 
         self.mas_GPA_paid11 = [QtWidgets.QLineEdit(self.frame_lbl_grade_point_averag_paid9_4) for _ in
@@ -113,5 +76,3 @@ class UIFunctions(Ui_MainWindow):
         # GPA_budget9
         for i in range(self.SIZE_GRADE_POINT_AVERAG_BUDGET_9):
             self.mas_GPA_budget9[i].setPlaceholderText(_translate("MainWindow", "4.5"))
-
-'''
