@@ -1,0 +1,10 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>res/output.png</file>
+    <file>res/excel.png</file>
+    <file>res/menu.png</file>
+    <file>res/graph.png</file>
+    <file>res/edit.png</file>
+    <file>res/close_white.png</file>
+  </qresource>
+</RCC>

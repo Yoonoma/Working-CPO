@@ -6,8 +6,6 @@ from os import system
 import xlsxwriter
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QIntValidator, QRegExpValidator
 
 # GUI FILE
 
@@ -38,9 +36,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.proportion_stud_parttime = 0
         self.proportion_stud_budget = 0  # 1.3
         self.proportion_stud_top50 = 0  # 1.4.1
-
-        # Input Restriction
-        self.setValidator()
 
         # PAGES
         ########################################################################
@@ -209,40 +204,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.le_grade_point_averag_budget11.setText(str(self.GPA_budget11))
         self.ui.le_grade_point_averag_paid11.setText(str(self.GPA_paid11))
         self.FlagSave = True
-
-    '''Проверка'''
-
-    def setValidator(self) -> None:
-        validator_int = QIntValidator(0, 1000, self)
-        validator_double = QRegExpValidator(QRegExp(r'^(?:0|[2-5])\.[0-9]+$'))
-
-        self.ui.le_count_stud.setValidator(validator_int)
-        self.ui.le_count_stud_paid.setValidator(validator_int)
-        self.ui.le_count_stud_budget.setValidator(validator_int)
-        self.ui.le_count_stud_absentia.setValidator(validator_int)
-        self.ui.le_count_stud_fulltime.setValidator(validator_int)
-        self.ui.le_count_stud_parttime.setValidator(validator_int)
-
-        for i in range(self.ui.SIZE_TOP50):
-            self.ui.mas_top50[i].setValidator(validator_int)
-
-        for i in range(self.ui.SIZE_GRADE_POINT_AVERAG_PAID_9):
-            self.ui.mas_GPA_paid9[i].setValidator(validator_double)
-
-        for i in range(self.ui.SIZE_GRADE_POINT_AVERAG_BUDGET_9):
-            self.ui.mas_GPA_budget9[i].setValidator(validator_double)
-
-        for i in range(self.ui.SIZE_GRADE_POINT_AVERAG_PAID_11):
-            self.ui.mas_GPA_paid11[i].setValidator(validator_double)
-
-        for i in range(self.ui.SIZE_GRADE_POINT_AVERAG_BUDGET_11):
-            self.ui.mas_GPA_budget11[i].setValidator(validator_double)
-
-        self.ui.le_top50.setValidator(validator_int)
-        self.ui.le_grade_point_averag_paid9.setValidator(validator_double)
-        self.ui.le_grade_point_averag_budget9.setValidator(validator_double)
-        self.ui.le_grade_point_averag_paid11.setValidator(validator_double)
-        self.ui.le_grade_point_averag_budget11.setValidator(validator_double)
 
     def test_user(self):
         self.ui.le_count_stud.setText("150")

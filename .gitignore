@@ -1,3 +1,5 @@
 *.docx
 *.xlsx
 build/
+poetry.lock
+pyproject.toml
