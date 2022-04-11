@@ -27,28 +27,6 @@ class Ui_MainWindow(object):
         ##############################################################
         ## DATA
         ###############################################################
-
-        ## SIZE ARRAYS
-        self.SIZE_TOP50 = 7
-        self.SIZE_GRADE_POINT_AVERAG_BUDGET_9 = 21
-        self.SIZE_GRADE_POINT_AVERAG_PAID_9 = 21
-        self.SIZE_GRADE_POINT_AVERAG_BUDGET_11 = 21
-        self.SIZE_GRADE_POINT_AVERAG_PAID_11 = 21
-
-        ## ARRRAYS
-        self.mas_top50 = []
-        self.mas_GPA_budget9 = []
-        self.mas_GPA_paid9 = []
-        self.mas_GPA_budget11 = []
-        self.mas_GPA_paid11 = []
-
-        ## Label
-        self.lst_label_top50 = []
-        self.lst_label_GPA_budget9 = []
-        self.lst_label_GPA_paid9 = []
-        self.lst_label_GPA_budget11 = []
-        self.lst_label_GPA_paid11 = []
-
         ## Text lable arrays
         self.lbl_text_top50 = ("09.02.03 ПРОГРАММИРОВАНИЕ В КОМПЬЮТЕРНЫХ СИСТЕМАХ",
                                "09.02.07 ИНФОРМАЦИОННЫЕ СИСТЕМЫ И ПРОГРАММИРОВАНИЕ",
@@ -145,6 +123,27 @@ class Ui_MainWindow(object):
                                     "43.02.08 СЕРВИС ДОМАШНЕГО И КОММУНАЛЬНОГО ХОЗЯЙСТВА",
                                     "54.01.20 ГРАФИЧЕСКИЙ ДИЗАЙНЕР",
                                     "54.02.01 ДИЗАЙН (ПО ОТРАСЛЯМ)")
+
+        ## SIZE ARRAYS
+        self.SIZE_TOP50 = len(self.lbl_text_top50)
+        self.SIZE_GRADE_POINT_AVERAG_BUDGET_9 = len(self.lbl_text_GPA_budget9)
+        self.SIZE_GRADE_POINT_AVERAG_PAID_9 = len(self.lbl_text_GPA_paid9)
+        self.SIZE_GRADE_POINT_AVERAG_BUDGET_11 = len(self.lbl_text_GPA_budget11)
+        self.SIZE_GRADE_POINT_AVERAG_PAID_11 = len(self.lbl_text_GPA_paid11)
+
+        ## ARRRAYS
+        self.mas_top50 = []
+        self.mas_GPA_budget9 = []
+        self.mas_GPA_paid9 = []
+        self.mas_GPA_budget11 = []
+        self.mas_GPA_paid11 = []
+
+        ## Label
+        self.lst_label_top50 = []
+        self.lst_label_GPA_budget9 = []
+        self.lst_label_GPA_paid9 = []
+        self.lst_label_GPA_budget11 = []
+        self.lst_label_GPA_paid11 = []
 
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -1200,7 +1199,7 @@ class Ui_MainWindow(object):
         font.setFamily("Arial")
         font.setPointSize(13)
         self.lbl_grade_point_averag_paid11.setFont(font)
-        self.lbl_grade_point_averag_paid11.setStyleSheet("background-color: rgb(198, 198, 198);")
+        self.lbl_grade_point_averag_paid11.setStyleSheet("background-color: rgb(198, 198, 255);")
         self.lbl_grade_point_averag_paid11.setFrameShape(QtWidgets.QFrame.Box)
         self.lbl_grade_point_averag_paid11.setScaledContents(False)
         self.lbl_grade_point_averag_paid11.setWordWrap(True)
@@ -1258,7 +1257,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lbl_grade_point_averag_budget9.sizePolicy().hasHeightForWidth())
         self.lbl_grade_point_averag_budget9.setSizePolicy(sizePolicy)
-        self.lbl_grade_point_averag_budget9.setMinimumSize(QtCore.QSize(1000, 0))
+        self.lbl_grade_point_averag_budget9.setMinimumSize(QtCore.QSize(1000, 50))
         self.lbl_grade_point_averag_budget9.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -2033,12 +2032,12 @@ class Ui_MainWindow(object):
                                           "}")
         self.btn_graph_back.setObjectName("btn_graph_back")
         self.horizontalLayout_5.addWidget(self.btn_graph_back)
-        self.btn_output_exit = QtWidgets.QPushButton(self.frame_graph_btn)
-        self.btn_output_exit.setMinimumSize(QtCore.QSize(110, 45))
+        self.btn_graph_report = QtWidgets.QPushButton(self.frame_graph_btn)
+        self.btn_graph_report.setMinimumSize(QtCore.QSize(110, 45))
         font = QtGui.QFont()
         font.setPointSize(13)
-        self.btn_output_exit.setFont(font)
-        self.btn_output_exit.setStyleSheet("QPushButton {\n"
+        self.btn_graph_report.setFont(font)
+        self.btn_graph_report.setStyleSheet("QPushButton {\n"
                                            "    color: rgb(255, 255, 255);\n"
                                            "    background-color: rgb(35, 35, 35);\n"
                                            "    border: 0px solid;\n"
@@ -2046,8 +2045,8 @@ class Ui_MainWindow(object):
                                            "QPushButton:hover {\n"
                                            "    background-color: rgb(85, 170, 255);\n"
                                            "}")
-        self.btn_output_exit.setObjectName("btn_output_exit")
-        self.horizontalLayout_5.addWidget(self.btn_output_exit)
+        self.btn_graph_report.setObjectName("btn_graph_report")
+        self.horizontalLayout_5.addWidget(self.btn_graph_report)
         self.verticalLayout_8.addWidget(self.frame_graph_btn, 0, QtCore.Qt.AlignRight)
         self.Pages_Widget.addWidget(self.page_graph)
         self.verticalLayout_5.addWidget(self.Pages_Widget)
@@ -2072,7 +2071,7 @@ class Ui_MainWindow(object):
                                           "Количество студентов, соответствующих списку топ 50 наиболее востребованных профессий"))
         self.lbl_title1.setText(_translate("MainWindow", "№\n"
                                                          "п/п"))
-        self.lbl_count_stud_fulltime.setText(_translate("MainWindow", "Количество студентов очном отделения"))
+        self.lbl_count_stud_fulltime.setText(_translate("MainWindow", "Количество студентов очного отделения"))
         self.lbl_num_5.setText(_translate("MainWindow",
                                           "<html><head/><body><p><span style=\" font-weight:400;\">1.5</span></p></body></html>"))
         self.le_count_stud_parttime.setPlaceholderText(_translate("MainWindow", "100"))
@@ -2097,8 +2096,8 @@ class Ui_MainWindow(object):
                                                       "Количество студентов, обучающихся за счет средств соотвествеющих бюджеттной системы РФ государства"))
         self.lbl_num_7.setText(_translate("MainWindow",
                                           "<html><head/><body><p><span style=\" font-weight:400;\">1.6</span></p></body></html>"))
-        self.lbl_absentia.setText(_translate("MainWindow", "Количество студентов заочном отделения"))
-        self.lbl_parttime.setText(_translate("MainWindow", "Количество студентов очно-заочном отделения"))
+        self.lbl_absentia.setText(_translate("MainWindow", "Количество студентов заочного отделения"))
+        self.lbl_parttime.setText(_translate("MainWindow", "Количество студентов очно-заочного отделения"))
         self.le_count_stud_paid.setPlaceholderText(_translate("MainWindow", "100"))
         self.le_count_stud.setPlaceholderText(_translate("MainWindow", "100"))
         self.le_grade_point_averag_budget11.setPlaceholderText(_translate("MainWindow", "؊"))
@@ -2131,52 +2130,52 @@ class Ui_MainWindow(object):
         self.lbl_title3_2.setText(_translate("MainWindow", "Значение показателя"))
         self.lbl_num1_1.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.1</span></p></body></html>"))
-        self.lbl_count_stud_2.setText(_translate("MainWindow", "1.1 Общая численность  студентов"))
+        self.lbl_count_stud_2.setText(_translate("MainWindow", "Общая численность  студентов"))
         self.lo_count_stud.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_2.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.2</span></p></body></html>"))
         self.lbl_proportion_stud_fulltime.setText(_translate("MainWindow",
-                                                             "1.2 Удельный вес численности студентов, обучающихся по очной форме обучения в общей численности студентов"))
+                                                             "Удельный вес численности студентов, обучающихся по очной форме обучения в общей численности студентов"))
         self.lo_proportion_stud_fulltime.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_3.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.3</span></p></body></html>"))
         self.lbl_proportion_stud_budget.setText(_translate("MainWindow",
-                                                           "1.3 Удельный вес численности студентов, обучающихся за счет средств соответствующих бюджетов бюджетной системы РФ в общей численности студентов"))
+                                                           "Удельный вес численности студентов, обучающихся за счет средств соответствующих бюджетов бюджетной системы РФ в общей численности студентов"))
         self.lo_proportion_stud_budget.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_4.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.4</span></p></body></html>"))
         self.lbl_count_stud_top50.setText(_translate("MainWindow",
-                                                     "1.4 Общая численность студентов, обучающихся по профессиям и специальностям, соответсвующим списку 50 наиболее востребованных на рынке труда"))
+                                                     "Общая численность студентов, обучающихся по профессиям и специальностям, соответсвующим списку 50 наиболее востребованных на рынке труда"))
         self.lo_count_stud_top50.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_4_1.setText(_translate("MainWindow",
                                              "<html><head/><body><p><span style=\" font-weight:400;\">1.4.1</span></p></body></html>"))
         self.lbl_proportion_stud_top50.setText(_translate("MainWindow",
-                                                          "1.4.1 Удельный вес численности студентов, обучающихся по профессиям и специальностям, соответсвующим списку 50 наиболее востребованных на рынке труда, в общей численности студентов"))
+                                                          "Удельный вес численности студентов, обучающихся по профессиям и специальностям, соответсвующим списку 50 наиболее востребованных на рынке труда, в общей численности студентов"))
         self.lo_proportion_stud_top50.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_5.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.5</span></p></body></html>"))
         self.lbl_GPA_budget9.setText(_translate("MainWindow",
-                                                "<html><head/><body><p>1.5 Средний балл аттестата об <span style=\" font-weight:600;\">основном</span> общем образовании и результатов отбора студентов, принятых на обучение по <span style=\" text-decoration: underline;\">очной</span> форме обучения(бюджетники) </p></body></html>"))
+                                                "<html><head/><body><p>Средний балл аттестата об <span style=\" font-weight:600;\">основном</span> общем образовании и результатов отбора студентов, принятых на обучение по <span style=\" text-decoration: underline;\">очной</span> форме обучения(бюджетники) </p></body></html>"))
         self.lo_GPA_budget9.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_5_1.setText(_translate("MainWindow",
                                              "<html><head/><body><p><span style=\" font-weight:400;\">1.5.1</span></p></body></html>"))
         self.lbl_GPA_paid9.setText(_translate("MainWindow",
-                                              "<html><head/><body><p>1.5.1 Средний балл аттестата об <span style=\" font-weight:600;\">основном</span> общем образовании и результатов отбора студентов, принятых на обучение по <span style=\" text-decoration: underline;\">очной</span> форме обучения(платники) </p></body></html>"))
+                                              "<html><head/><body><p>Средний балл аттестата об <span style=\" font-weight:600;\">основном</span> общем образовании и результатов отбора студентов, принятых на обучение по <span style=\" text-decoration: underline;\">очной</span> форме обучения(платники) </p></body></html>"))
         self.lo_GPA_paid9.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_6.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.6</span></p></body></html>"))
         self.lbl_GPA_budget11.setText(_translate("MainWindow",
-                                                 "<html><head/><body><p>1.6 Средний балл аттестата об <span style=\" font-weight:600;\">среднем</span> общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(бюджетники) </p></body></html>"))
+                                                 "<html><head/><body><p>Средний балл аттестата об <span style=\" font-weight:600;\">среднем</span> общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(бюджетники) </p></body></html>"))
         self.lo_GPA_budget11.setText(_translate("MainWindow", "؊"))
         self.lbl_num1_6_1.setText(_translate("MainWindow",
                                              "<html><head/><body><p><span style=\" font-weight:400;\">1.6.1</span></p></body></html>"))
         self.lbl_GPA_paid11.setText(_translate("MainWindow",
-                                               "<html><head/><body><p>1.6.1 Средний балл аттестата об <span style=\" font-weight:600;\">среднем</span> общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(платники) </p></body></html>"))
+                                               "<html><head/><body><p>Средний балл аттестата об <span style=\" font-weight:600;\">среднем</span> общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(платники) </p></body></html>"))
         self.lo_GPA_paid11.setText(_translate("MainWindow", "؊"))
         self.btn_output_back.setText(_translate("MainWindow", "Назад"))
         self.btn_output_next.setText(_translate("MainWindow", "Далее"))
         self.btn_graph_back.setText(_translate("MainWindow", "Назад"))
-        self.btn_output_exit.setText(_translate("MainWindow", "Выход"))
+        self.btn_graph_report.setText(_translate("MainWindow", "Отчет"))
 
         ###################################################################
         ## HOLDER

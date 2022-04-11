@@ -22,6 +22,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # Checks
         self.ErrorInput = False  # Ошибка ввода от пользователя
         self.FlagSave = False  # Проврка на запись данных
+        self.CountErrorInput = 0
 
         # Data
         self.count_stud_top50 = 0
@@ -40,22 +41,27 @@ class MainWindow(QtWidgets.QMainWindow):
         # PAGES
         ########################################################################
 
+        self.test_user()
+
         # PAGE 1
         self.CountErrorInput = 0
-        self.ui.Btn_Menu_Input.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
-
-        self.test_user()
+        self.ui.btn_page_input.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
 
         self.ui.btn_input_save.clicked.connect(self.act_btn_input_save)
         self.ui.btn_input_next.clicked.connect(self.act_btn_input_next)
 
         # PAGE 2
-        self.ui.Btn_Menu_Output.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
+        self.ui.btn_page_output.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
+
         self.ui.btn_output_next.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
-        self.ui.btn_output_create_excel.clicked.connect(self.create_excel)
+        self.ui.btn_output_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
 
         # PAGE 3
-        self.ui.Btn_Menu_Graph.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
+        self.ui.btn_page_gpraph.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
+        self.ui.btn_graph_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
+
+        # Exit
+        self.ui.btn_close.clicked.connect(self.close)
 
     ########################################################################
     ## INPUT
@@ -89,19 +95,24 @@ class MainWindow(QtWidgets.QMainWindow):
             for operand in obj:
                 try:
                     float(operand.text())
-                    operand.setStyleSheet("background-color: rgb(255, 255, 255);")
-                except:
+                    operand.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                          "border: 1px solid;")
+                except ValueError:
                     self.CountErrorInput += 1
-                    operand.setStyleSheet("background-color: rgba(196, 0, 0, 0.75);")
+                    operand.setStyleSheet("background-color: rgb(196, 0, 0);\n"
+                                          "border: 1px solid;")
         else:
             try:
                 int(obj.text())
-                obj.setStyleSheet("background-color: rgb(255, 255, 255);")
-            except:
+                obj.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                  "border: 1px solid;")
+            except ValueError:
                 self.CountErrorInput += 1
-                obj.setStyleSheet("background-color: rgba(196, 0, 0, 0.75);")
+                obj.setStyleSheet("background-color: rgb(196, 0, 0);\n"
+                                  "border: 1px solid;")
 
     def detect_proportion(self) -> None:
+
         self.proportion_stud_fulltime = float(self.ui.le_count_stud_fulltime.text()) / float(
             self.ui.le_count_stud.text()) * 100.0
         self.proportion_stud_absentia = float(self.ui.le_count_stud_absentia.text()) / float(
@@ -117,16 +128,20 @@ class MainWindow(QtWidgets.QMainWindow):
             self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);")
             self.CountErrorInput += 1
         else:
-            self.ui.le_count_stud.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.ui.le_count_stud_fulltime.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.ui.le_count_stud_absentia.setStyleSheet("background-color: rgb(255, 255, 255);")
-            self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgb(255, 255, 255);")
+            self.ui.le_count_stud.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                "border: 1px solid;")
+            self.ui.le_count_stud_fulltime.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                         "border: 1px solid;")
+            self.ui.le_count_stud_absentia.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                         "border: 1px solid;")
+            self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                         "border: 1px solid;")
 
     def handler_btn_error(self, btn) -> None:
         if self.ErrorInput:
             btn.setStyleSheet("QPushButton {\n"
                               "    color: rgb(255, 255, 255);\n"
-                              "    background-color: rgba(196, 0, 0, 0.5);\n"
+                              "    background-color: rgb(196, 0, 0);\n"
                               "    border: 0px solid;\n"
                               "}\n"
                               "QPushButton:hover {\n"
@@ -153,9 +168,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.detect_error_input(self.ui.le_count_stud_absentia)
         self.detect_error_input(self.ui.le_count_stud_parttime)
 
-        if not self.ErrorInput:
-            self.detect_proportion()
-
         self.detect_error_input(self.ui.le_count_stud_paid)
         self.detect_error_input(self.ui.le_count_stud_budget)
 
@@ -173,6 +185,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.CountErrorInput >= 1:
             self.ErrorInput = True
         else:
+            self.detect_proportion()
             self.ErrorInput = False
             self.save_data()
 
@@ -220,44 +233,6 @@ class MainWindow(QtWidgets.QMainWindow):
         [obj.setText("4.5") for obj in self.ui.mas_GPA_budget9]
         [obj.setText("4.2") for obj in self.ui.mas_GPA_paid11]
         [obj.setText("4.9") for obj in self.ui.mas_GPA_budget11]
-
-    ########################################################################
-    ## OUTPUT
-    ########################################################################
-
-    def create_excel(self) -> None:
-        if self.FlagSave:
-            workbook = xlsxwriter.Workbook("demo.xlsx")
-            worksheet = workbook.add_worksheet(f"Отчет за {date.today()}")
-
-            data = (
-                (self.ui.lbl_count_stud.text(), self.ui.le_count_stud.text()),
-                (self.ui.lbl_proportion_stud_fulltime.text(), '{:.2f}%'.format(self.proportion_stud_fulltime)),
-                (self.ui.lbl_proportion_stud_budget.text(), '{:.2f}%'.format(self.proportion_stud_budget)),
-                (self.ui.lbl_count_stud_top50.text(), str(self.count_stud_top50)),
-                (self.ui.lbl_proportion_stud_top50.text(), '{:.2f}%'.format(self.proportion_stud_top50)),
-                (self.ui.lbl_GPA_budget9.text(), '{:.2f}'.format(self.GPA_budget9)),
-                (self.ui.lbl_GPA_paid9.text(), '{:.2f}'.format(self.GPA_paid9)),
-                (self.ui.lbl_GPA_budget11.text(), '{:.2f}'.format(self.GPA_budget11)),
-                (self.ui.lbl_GPA_paid11.text(), '{:.2f}'.format(self.GPA_paid11))
-
-            )
-
-            for i, (lbl, value) in enumerate(data, start=1):
-                worksheet.write(f"A{i}", lbl)
-                worksheet.write(f"B{i}", value)
-
-            format = workbook.add_format({'text_wrap': True})
-
-            # Setting the format but not setting the column width.
-            worksheet.set_column('A:B', None, format)
-            workbook.close()
-            system("start demo.xlsx")
-            '''Доработать'''
-        else:
-            self.handler_btn_error(self.ui.btn_output_create_excel)
-            self.handler_btn_error(self.ui.btn_output_next)
-            print("Данные не сохранены")
 
 
 def main():
