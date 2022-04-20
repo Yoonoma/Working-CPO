@@ -1,15 +1,10 @@
 import sys
 
-from datetime import date
-from os import system
-
-import xlsxwriter
-
 from PyQt5 import QtWidgets
-
-# GUI FILE
+from PyQt5.QtWidgets import QMessageBox
 
 from ui_main import Ui_MainWindow
+from report import ReportWindow
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -21,7 +16,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # Checks
         self.ErrorInput = False  # Ошибка ввода от пользователя
-        self.FlagSave = False  # Проврка на запись данных
+        self.FlagSave = False  # Проверка на запись данных
+        self.ErrorProportion = False
+
+        self.msg_text = ''
+
         self.CountErrorInput = 0
 
         # Data
@@ -43,21 +42,24 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.test_user()
 
-        # PAGE 1
-        self.CountErrorInput = 0
+        # MENU
         self.ui.btn_page_input.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
+        self.ui.btn_page_output.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
+        self.ui.btn_page_gpraph.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
+
+        self.ui.btn_page_report.clicked.connect(self.report)
+        self.ui.btn_graph_report.clicked.connect(self.report)
+        # PAGE 1
 
         self.ui.btn_input_save.clicked.connect(self.act_btn_input_save)
         self.ui.btn_input_next.clicked.connect(self.act_btn_input_next)
 
         # PAGE 2
-        self.ui.btn_page_output.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
 
         self.ui.btn_output_next.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
         self.ui.btn_output_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
 
         # PAGE 3
-        self.ui.btn_page_gpraph.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph))
         self.ui.btn_graph_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
 
         # Exit
@@ -111,7 +113,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 obj.setStyleSheet("background-color: rgb(196, 0, 0);\n"
                                   "border: 1px solid;")
 
-    def detect_proportion(self) -> None:
+    def detect_error_proportion(self) -> None:
 
         self.proportion_stud_fulltime = float(self.ui.le_count_stud_fulltime.text()) / float(
             self.ui.le_count_stud.text()) * 100.0
@@ -122,12 +124,16 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if 99 < self.proportion_stud_parttime + self.proportion_stud_absentia + self.proportion_stud_fulltime > 101:
             self.ErrorInput = True
-            self.ui.le_count_stud.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);")
-            self.ui.le_count_stud_fulltime.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);")
-            self.ui.le_count_stud_absentia.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);")
-            self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);")
-            self.CountErrorInput += 1
+            self.ErrorProportion = True
+
+            self.ui.le_count_stud.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+            self.ui.le_count_stud_fulltime.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+            self.ui.le_count_stud_absentia.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+            self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+
+            self.msg_text += "\nОшибка: формы обучения."
         else:
+            self.ErrorProportion = False
             self.ui.le_count_stud.setStyleSheet("background-color: rgb(238, 238, 236);\n"
                                                 "border: 1px solid;")
             self.ui.le_count_stud_fulltime.setStyleSheet("background-color: rgb(238, 238, 236);\n"
@@ -136,6 +142,37 @@ class MainWindow(QtWidgets.QMainWindow):
                                                          "border: 1px solid;")
             self.ui.le_count_stud_parttime.setStyleSheet("background-color: rgb(238, 238, 236);\n"
                                                          "border: 1px solid;")
+
+        if int(self.ui.le_count_stud_budget.text()) + int(self.ui.le_count_stud_paid.text()) != int(
+                self.ui.le_count_stud.text()):
+            self.ErrorInput = True
+            self.ErrorProportion = True
+
+            self.ui.le_count_stud_budget.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+            self.ui.le_count_stud_paid.setStyleSheet("background-color: rgba(200, 0, 0, 0.75);border: 1px solid;")
+
+            self.msg_text += '\nОшибка: Количество бюджетников и платников не совпадают с общим количеством студентов.'
+        else:
+            self.ErrorProportion = False
+            self.ui.le_count_stud_budget.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                       "border: 1px solid;")
+            self.ui.le_count_stud_paid.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                                     "border: 1px solid;")
+
+    def detect_error_count_stud(self):
+        if sum([int(obj.text()) for obj in self.ui.mas_top50]) > int(self.ui.le_count_stud.text()):
+            self.ErrorInput = True
+            [obj.setStyleSheet("background-color: rgb(196, 0, 0);\n"
+                               "border: 1px solid;") for obj in self.ui.mas_top50]
+            self.ui.le_top50.setStyleSheet("background-color: rgb(196, 0, 0);\n"
+                                           "border: 1px solid;")
+            self.ui.le_top50.setText('')
+            self.msg_text += "Ошибка: количество студентов, соответствующих списку топ 50 наиболее востребованных профессий, превышает общее количество студентов."
+        else:
+            [obj.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                               "border: 1px solid;") for obj in self.ui.mas_top50]
+            self.ui.le_top50.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                           "border: 1px solid;")
 
     def handler_btn_error(self, btn) -> None:
         if self.ErrorInput:
@@ -161,6 +198,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def checking_values(self):
         # Counter Error
         self.CountErrorInput = 0
+        self.msg_text = ''
 
         # Main Input
         self.detect_error_input(self.ui.le_count_stud)
@@ -184,50 +222,107 @@ class MainWindow(QtWidgets.QMainWindow):
 
         if self.CountErrorInput >= 1:
             self.ErrorInput = True
+            self.msg_text = f"Ошибка ввода данных, проверьте корректность данных, заполните {self.CountErrorInput} полей"
         else:
-            self.detect_proportion()
             self.ErrorInput = False
-            self.save_data()
+            self.detect_error_count_stud()
+            self.detect_error_proportion()
+        if self.msg_text:
+            self.showDialogError(self.msg_text)
+        self.save_data()
 
     def save_data(self):
-        self.count_stud_top50 = sum([int(obj.text()) for obj in self.ui.mas_top50])
-        self.GPA_budget9 = sum(
-            [float(obj.text()) for obj in self.ui.mas_GPA_budget9]) / self.ui.SIZE_GRADE_POINT_AVERAG_BUDGET_9
-        self.GPA_paid9 = sum(
-            [float(obj.text()) for obj in self.ui.mas_GPA_paid9]) / self.ui.SIZE_GRADE_POINT_AVERAG_PAID_9
-        self.GPA_budget11 = sum(
-            [float(obj.text()) for obj in self.ui.mas_GPA_budget11]) / self.ui.SIZE_GRADE_POINT_AVERAG_BUDGET_11
-        self.GPA_paid11 = sum(
-            [float(obj.text()) for obj in self.ui.mas_GPA_paid11]) / self.ui.SIZE_GRADE_POINT_AVERAG_PAID_11
+        if not self.ErrorInput and not self.ErrorProportion:
+            self.count_stud_top50 = sum([int(obj.text()) for obj in self.ui.mas_top50])
+            self.GPA_budget9 = sum(
+                [float(obj.text()) for obj in self.ui.mas_GPA_budget9]) / self.ui.SIZE_GRADE_POINT_AVERAG
+            self.GPA_paid9 = sum(
+                [float(obj.text()) for obj in self.ui.mas_GPA_paid9]) / self.ui.SIZE_GRADE_POINT_AVERAG
+            self.GPA_budget11 = sum(
+                [float(obj.text()) for obj in self.ui.mas_GPA_budget11]) / self.ui.SIZE_GRADE_POINT_AVERAG
+            self.GPA_paid11 = sum(
+                [float(obj.text()) for obj in self.ui.mas_GPA_paid11]) / self.ui.SIZE_GRADE_POINT_AVERAG
 
-        self.proportion_stud_fulltime = float(self.ui.le_count_stud_fulltime.text()) / float(
-            self.ui.le_count_stud.text()) * 100.0
-        self.proportion_stud_absentia = float(self.ui.le_count_stud_absentia.text()) / float(
-            self.ui.le_count_stud.text()) * 100.0
-        self.proportion_stud_parttime = float(self.ui.le_count_stud_parttime.text()) / float(
-            self.ui.le_count_stud.text()) * 100.0
+            self.proportion_stud_fulltime = float(self.ui.le_count_stud_fulltime.text()) / float(
+                self.ui.le_count_stud.text()) * 100.0
+            self.proportion_stud_absentia = float(self.ui.le_count_stud_absentia.text()) / float(
+                self.ui.le_count_stud.text()) * 100.0
+            self.proportion_stud_parttime = float(self.ui.le_count_stud_parttime.text()) / float(
+                self.ui.le_count_stud.text()) * 100.0
 
-        self.proportion_stud_budget = float(self.ui.le_count_stud_budget.text()) / float(
-            self.ui.le_count_stud.text()) * 100.0
-        self.proportion_stud_top50 = self.count_stud_top50 / float(self.ui.le_count_stud.text()) * 100.0
+            self.proportion_stud_budget = float(self.ui.le_count_stud_budget.text()) / float(
+                self.ui.le_count_stud.text()) * 100.0
+            self.proportion_stud_top50 = self.count_stud_top50 / float(self.ui.le_count_stud.text()) * 100.0
 
-        self.ui.le_top50.setText(str(self.count_stud_top50))
-        self.ui.le_grade_point_averag_budget9.setText(str(self.GPA_budget9))
-        self.ui.le_grade_point_averag_paid9.setText(str(self.GPA_paid9))
-        self.ui.le_grade_point_averag_budget11.setText(str(self.GPA_budget11))
-        self.ui.le_grade_point_averag_paid11.setText(str(self.GPA_paid11))
-        self.FlagSave = True
+            self.ui.le_top50.setText(str(self.count_stud_top50))
+            self.ui.le_grade_point_averag_budget9.setText(str(self.GPA_budget9))
+            self.ui.le_grade_point_averag_paid9.setText(str(self.GPA_paid9))
+            self.ui.le_grade_point_averag_budget11.setText(str(self.GPA_budget11))
+            self.ui.le_grade_point_averag_paid11.setText(str(self.GPA_paid11))
+            self.FlagSave = True
+
+    # Output
+
+    '''Добавить окна и проверку на сохранение данных'''
+    '''Ошибка в главном меню'''
+
+    def report(self):
+        if self.FlagSave:
+            data_table = (
+                ['1.1', 'Общая численность студентов', int(self.ui.le_count_stud.text())],
+                ['1.2',
+                 'Удельный вес численности студентов, обучающихся по очной форме обучения в общей численности студентов',
+                 f'{round(self.proportion_stud_fulltime, 2)}'.replace('.', ',') + '%'],
+                ['1.3',
+                 'Удельный вес численности студентов, обучающихся за счет средств соответствующих бюджетов бюджетной системы РФ в общей численности студентов',
+                 f'{round(self.proportion_stud_budget, 2)}'.replace('.', ',') + '%'],
+                ['1.4',
+                 'Общая численность студентов, обучающихся по профессиям и специальностям, соответствующим  списку 50 наиболее востребованных на рынке труда',
+                 self.count_stud_top50],
+                ['1.4.1',
+                 'Удельный вес численности студентов, обучающихся по профессиям и специальностям, соответствующим  списку 50 наиболее востребованных на рынке труда, в общей численности студентов',
+                 f'{round(self.proportion_stud_top50, 2)}'.replace('.', ',') + '%'],
+                ['1.5',
+                 'Средний балл аттестата об основном общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(бюджетники) ',
+                 f"{self.GPA_budget9}"[:4]],
+                ['1.5.1',
+                 'Средний балл аттестата об основном общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(платники) ',
+                 f"{self.GPA_paid9}"[:4]],
+                ['1.6',
+                 'Средний балл аттестата об среднем общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(бюджетники) ',
+                 f"{self.GPA_paid11}"[:4]],
+                ['1.6.1',
+                 'Средний балл аттестата об среднем общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(платники) ',
+                 f"{self.GPA_paid11}"[:4]]
+            )
+            Fout = open('case.txt', 'w')
+            for inum, text, value in data_table:
+                Fout.write(f"{inum} {text} {value}\n")
+            Fout.close()
+
+            self.report_win = ReportWindow()
+            self.report_win.show()
+        else:
+            self.showDialogError("Ошибка: Данные не сохранены.")
+
+    def showDialogError(self, text):
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText(text)
+        msgBox.setWindowTitle("Ошибка")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        msgBox.exec()
 
     def test_user(self):
         self.ui.le_count_stud.setText("150")
-        self.ui.le_count_stud_paid.setText("150")
-        self.ui.le_count_stud_budget.setText("90")
+        self.ui.le_count_stud_paid.setText("100")
+        self.ui.le_count_stud_budget.setText("50")
         self.ui.le_count_stud_fulltime.setText("50")
         self.ui.le_count_stud_absentia.setText("50")
         self.ui.le_count_stud_parttime.setText("50")
 
         for obj in self.ui.mas_top50:
-            obj.setText("1")
+            obj.setText("10")
 
         [obj.setText("4.0") for obj in self.ui.mas_GPA_paid9]
         [obj.setText("4.5") for obj in self.ui.mas_GPA_budget9]

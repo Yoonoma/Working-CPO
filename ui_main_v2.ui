@@ -666,8 +666,8 @@ QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1182</width>
-                   <height>2308</height>
+                   <width>1177</width>
+                   <height>2148</height>
                   </rect>
                  </property>
                  <layout class="QGridLayout" name="gridLayout">
@@ -985,8 +985,8 @@ border: 1px solid;
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1003</width>
-                       <height>348</height>
+                       <width>998</width>
+                       <height>308</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_5">
@@ -1105,8 +1105,8 @@ border: 1px solid;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1003</width>
-                       <height>348</height>
+                       <width>998</width>
+                       <height>308</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_3">
@@ -1430,8 +1430,8 @@ border: 1px solid;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1003</width>
-                       <height>348</height>
+                       <width>998</width>
+                       <height>308</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_4">
@@ -1718,8 +1718,8 @@ border: 1px solid;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1003</width>
-                       <height>348</height>
+                       <width>998</width>
+                       <height>308</height>
                       </rect>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_7">
@@ -2062,7 +2062,7 @@ border: 1px solid;</string>
                       <rect>
                        <x>0</x>
                        <y>0</y>
-                       <width>1003</width>
+                       <width>998</width>
                        <height>308</height>
                       </rect>
                      </property>
@@ -2729,7 +2729,7 @@ border: 1px solid;
                     <enum>QFrame::Box</enum>
                    </property>
                    <property name="text">
-                    <string>Наименвование показателя</string>
+                    <string>Наименование показателя</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignCenter</set>
