@@ -6,5 +6,6 @@
     <file>res/graph.png</file>
     <file>res/edit.png</file>
     <file>res/close_white.png</file>
+    <file>res/help.png</file>
   </qresource>
 </RCC>

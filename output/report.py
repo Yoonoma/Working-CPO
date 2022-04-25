@@ -1,21 +1,26 @@
 import os
 import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox, QTableWidgetItem
+from docx.shared import Cm, Pt
+
 from ui_report import Ui_Dialog
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Side, Border, Font
-import aspose.words as aw
+import docx
 
 
 class ReportWindow(QWidget):
-    def __init__(self):
+    def __init__(self, data_table):
         super(ReportWindow, self).__init__()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
         self.dir = ''
+        self.data = data_table
+
+        self.update_tabel()
 
         self.ui.btn_chouse_dir.clicked.connect(self.get_dir)
         self.ui.btn_report.clicked.connect(self.report)
@@ -29,34 +34,27 @@ class ReportWindow(QWidget):
             self.dir = selected_dir
             self.ui.le_folder_path.setText(selected_dir)
 
+    def update_tabel(self):
+        for i in range(len(self.data)):
+            self.ui.tableWidget.setItem(i + 1, 2, QTableWidgetItem(f"{self.data[i][2]}"))
+
     def report(self):
         if not self.dir:
-            self.showDialogError("Ошибка: Выберите путь.")
+            self.showDialog("Ошибка", "Ошибка: Выберите путь.")
         elif not (self.ui.checkBox_word.isChecked() or self.ui.checkBox_excel.isChecked()):
-            self.showDialogError("Ошибка: Выберите нужный формат файла.")
+            self.showDialog("Ошибка", "Ошибка: Выберите нужный формат файла.")
         else:
-            data = []
-            try:
-                Fin = open('case.txt', 'r')
-                for line in Fin.readlines():
-                    line = line.split()
-                    data.append([line[0], ' '.join(map(str, line[1:-2])), line[-1]])
-            except IOError:
-                sys.exit()
-            finally:
-                Fin.close()
-
             if self.ui.checkBox_excel.isChecked():
-                self.create_excel(data, self.dir)
-            elif self.ui.checkBox_word.isChecked():
-                self.create_word()
-            elif self.ui.checkBox_word.isChecked() and self.ui.checkBox_excel.isChecked():
-                self.create_excel(data, self.dir)
-                self.create_word()
-            self.showDialogError("Отчет создан")
+                self.create_excel(self.data)
+            if self.ui.checkBox_word.isChecked():
+                self.create_word(self.data)
+            if self.ui.checkBox_word.isChecked() and self.ui.checkBox_excel.isChecked():
+                self.create_excel(self.data)
+                self.create_word(self.data)
+            self.showDialog("Успех", "Отчет создан.")
             self.close()
 
-    def create_excel(self, data, path_file):
+    def create_excel(self, items):
         # Создаем новый лист
         workbook = Workbook()
         ws = workbook.active
@@ -95,7 +93,7 @@ class ReportWindow(QWidget):
         # Заполняем таблицу
         row = 2
 
-        for inum, text, value in data:
+        for inum, text, value in items:
             ws[f'A{row}'] = inum
             ws[f'A{row}'].font = font_table
             ws[f'A{row}'].alignment = Alignment(horizontal='center', vertical='center')
@@ -119,101 +117,59 @@ class ReportWindow(QWidget):
 
         # Устанавливаем границы таблицы
         thin = Side(border_style="thin", color="000000")
-        for row in ws[f'A1:C{len(data) + 1}']:
+        for row in ws[f'A1:C{len(items) + 1}']:
             for cell in row:
                 cell.border = Border(top=thin, left=thin, right=thin, bottom=thin)
 
         # Сохраняем файл
-        workbook.save(f"{path_file}/Образовательная деятельность СПО.xlsx")
+        workbook.save(f"{self.dir}/Образовательная деятельность СПО Excel.xlsx")
 
-    def create_word(self):
-        pass
+    def create_word(self, items):
+        # Create an instance of a word document
+        document = docx.Document()
 
-    def showDialogError(self, text):
+        # Add a Title to the document
+        document.add_heading('Шапка', 0)
+
+        # добавляем таблицу с одной строкой
+        # для заполнения названий колонок
+        table = document.add_table(1, len(items[0]))
+        # определяем стиль таблицы
+        table.allow_autofit = True
+        table.style = 'Table Grid'
+        # Получаем строку с колонками из добавленной таблицы
+        head_cells = table.rows[0].cells
+        # добавляем названия колонок
+        for i, item in enumerate(['  №\nП/П', 'Наименование показателя', 'Значение показателя']):
+            p = head_cells[i].paragraphs[0]
+            # название колонки
+            p.add_run(item).bold = True
+
+        # добавляем данные к существующей таблице
+        for row in items:
+            # добавляем строку с ячейками к объекту таблицы
+            cells = table.add_row().cells
+            for i, item in enumerate(row):
+                # вставляем данные в ячейки
+                cells[i].text = str(item)
+                # Шрифт и размер
+                cells[i].paragraphs[0].runs[0].font.name = 'Times New Roman'
+                cells[i].paragraphs[0].runs[0].font.size = Pt(12)
+
+        table.columns[0].width = Cm(1.5)
+        table.columns[1].width = Cm(11.5)
+        table.columns[2].width = Cm(3.3)
+
+        # Now save the document to a location
+        document.save(f'{self.dir}/Образовательная деятельность СПО Word.docx')
+
+    def showDialog(self, title, text):
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
         msgBox.setText(text)
-        msgBox.setWindowTitle("Ошибка")
+        msgBox.setWindowTitle(title)
         msgBox.setStandardButtons(QMessageBox.Ok)
         msgBox.exec()
-
-
-def create_word():
-    # Create a new Word document.
-    doc = aw.Document()
-
-    # Create document builder.
-    builder = aw.DocumentBuilder(doc)
-
-    # Start the table.
-    table = builder.start_table()
-
-    # Insert cell.
-    builder.insert_cell()
-
-    # Table wide formatting must be applied after at least one row is present in the table.
-    table.left_indent = 20.0
-
-    # Set height and define the height rule for the header row.
-    builder.row_format.height = 40.0
-    builder.row_format.height_rule = aw.HeightRule.AT_LEAST
-
-    # Set alignment and font settings.
-    builder.paragraph_format.alignment = aw.ParagraphAlignment.CENTER
-    builder.font.size = 16
-    builder.font.name = "Arial"
-    builder.font.bold = True
-
-    builder.cell_format.width = 100.0
-    builder.write("Header Row,\n Cell 1")
-
-    # We don't need to specify this cell's width because it's inherited from the previous cell.
-    builder.insert_cell()
-    builder.write("Header Row,\n Cell 2")
-
-    builder.insert_cell()
-    builder.cell_format.width = 200.0
-    builder.write("Header Row,\n Cell 3")
-    builder.end_row()
-
-    builder.cell_format.width = 100.0
-    builder.cell_format.vertical_alignment = aw.tables.CellVerticalAlignment.CENTER
-
-    # Reset height and define a different height rule for table body.
-    builder.row_format.height = 30.0
-    builder.row_format.height_rule = aw.HeightRule.AUTO
-    builder.insert_cell()
-
-    # Reset font formatting.
-    builder.font.size = 12
-    builder.font.bold = False
-
-    builder.write("Row 1, Cell 1 Content")
-    builder.insert_cell()
-    builder.write("Row 1, Cell 2 Content")
-
-    builder.insert_cell()
-    builder.cell_format.width = 200.0
-    builder.write("Row 1, Cell 3 Content")
-    builder.end_row()
-
-    builder.insert_cell()
-    builder.cell_format.width = 100.0
-    builder.write("Row 2, Cell 1 Content")
-
-    builder.insert_cell()
-    builder.write("Row 2, Cell 2 Content")
-
-    builder.insert_cell()
-    builder.cell_format.width = 200.0
-    builder.write("Row 2, Cell 3 Content.")
-    builder.end_row()
-
-    # End table.
-    builder.end_table()
-
-    # Save the document.
-    doc.save('/home/yaroslove/test/Word.docx')
 
 
 def main():
@@ -223,4 +179,4 @@ def main():
 
 
 if __name__ == '__main__':
-    create_word()
+    main()

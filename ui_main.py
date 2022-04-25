@@ -1,6 +1,11 @@
+import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRegExp
-from PyQt5.QtGui import QIntValidator, QRegExpValidator
+from PyQt5.QtGui import QIntValidator, QRegExpValidator, QPixmap
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from PyQt5.QtCore import Qt
 
 import resource_rc
 
@@ -10,7 +15,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1280, 800)
         MainWindow.setMinimumSize(QtCore.QSize(1280, 800))
-        MainWindow.setStyleSheet("background-color: rgb(45, 45, 45);")
+        MainWindow.setStyleSheet("background-color: rgb(45, 45, 45);font:Roboto;")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
@@ -245,20 +250,19 @@ class Ui_MainWindow(object):
         font.setPointSize(12)
         self.btn_page_report.setFont(font)
         self.btn_page_report.setStyleSheet("QPushButton {\n"
-                                          "    color: rgb(255, 255, 255);\n"
-                                          "    background-color: rgb(35, 35, 35);\n"
-                                          "    border: 0px solid;\n"
-                                          "    text-align: left;\n"
-                                          "}\n"
-                                          "QPushButton:hover {\n"
-                                          "    background-color: rgb(85, 170, 255);\n"
-                                          "}")
+                                           "    color: rgb(255, 255, 255);\n"
+                                           "    background-color: rgb(35, 35, 35);\n"
+                                           "    border: 0px solid;\n"
+                                           "    text-align: left;\n"
+                                           "}\n"
+                                           "QPushButton:hover {\n"
+                                           "    background-color: rgb(85, 170, 255);\n"
+                                           "}")
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(":/icons/res/excel.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_page_report.setIcon(icon4)
         self.btn_page_report.setObjectName("btn_page_report")
         self.verticalLayout_4.addWidget(self.btn_page_report)
-
 
         self.verticalLayout_3.addWidget(self.frame_top_menus, 0, QtCore.Qt.AlignTop)
         self.frame_close = QtWidgets.QFrame(self.frame_left_menu)
@@ -272,6 +276,30 @@ class Ui_MainWindow(object):
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_9.setSpacing(0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
+
+        ## Icon Button Help
+
+        self.btn_help = QtWidgets.QPushButton(self.frame_close)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.btn_help.setFont(font)
+        self.btn_help.setStyleSheet("QPushButton {\n"
+                                     "    background-color: rgba(255, 255, 255, 0);\n"
+                                     "    border: none;\n"
+                                     "}\n"
+                                     "QPushButton:hover {\n"
+                                     "    background-color: rgb(85, 170, 255);\n"
+                                     "}")
+        self.btn_help.setText("")
+        icon5 = QtGui.QIcon()
+        self.pixmap         = QPixmap("LightOff.png")
+        icon5.addPixmap(QtGui.QPixmap("../res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_help.setIcon(icon5)
+        self.btn_help.setIconSize(QtCore.QSize(64, 64))
+        self.btn_help.setObjectName("btn_help")
+        self.verticalLayout_9.addWidget(self.btn_help)
+
+        ## Icon Button Close
         self.btn_close = QtWidgets.QPushButton(self.frame_close)
         font = QtGui.QFont()
         font.setFamily("Arial")
@@ -290,6 +318,13 @@ class Ui_MainWindow(object):
         self.btn_close.setIconSize(QtCore.QSize(64, 64))
         self.btn_close.setObjectName("btn_close")
         self.verticalLayout_9.addWidget(self.btn_close)
+
+
+
+
+
+
+
         self.verticalLayout_3.addWidget(self.frame_close, 0, QtCore.Qt.AlignBottom)
         self.horizontalLayout_2.addWidget(self.frame_left_menu)
         self.frame_pages = QtWidgets.QFrame(self.Content)
@@ -1906,33 +1941,118 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.addWidget(self.btn_output_next)
         self.verticalLayout_6.addWidget(self.frame_output_btn, 0, QtCore.Qt.AlignRight)
         self.Pages_Widget.addWidget(self.page_output)
+
+
+        ## Graphic Page
+
         self.page_graph = QtWidgets.QWidget()
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.page_graph.sizePolicy().hasHeightForWidth())
+        self.page_graph.setSizePolicy(sizePolicy)
         self.page_graph.setObjectName("page_graph")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.page_graph)
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_8.setSpacing(0)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
+
+        ## Окно графика
+
         self.frame_graphics = QtWidgets.QFrame(self.page_graph)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_graphics.sizePolicy().hasHeightForWidth())
+        self.frame_graphics.setSizePolicy(sizePolicy)
+        self.frame_graphics.setStyleSheet("")
         self.frame_graphics.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_graphics.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_graphics.setObjectName("frame_graphics")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.frame_graphics)
-        self.horizontalLayout_4.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
-        self.horizontalLayout_4.setContentsMargins(9, 9, 9, 9)
-        self.horizontalLayout_4.setSpacing(9)
-        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.frame_graph_1 = QtWidgets.QFrame(self.frame_graphics)
-        self.frame_graph_1.setMinimumSize(QtCore.QSize(585, 630))
-        self.frame_graph_1.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_graph_1.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_graph_1.setObjectName("frame_graph_1")
-        self.horizontalLayout_4.addWidget(self.frame_graph_1)
-        self.frame_graph_2 = QtWidgets.QFrame(self.frame_graphics)
-        self.frame_graph_2.setMinimumSize(QtCore.QSize(585, 630))
-        self.frame_graph_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame_graph_2.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_graph_2.setObjectName("frame_graph_2")
-        self.horizontalLayout_4.addWidget(self.frame_graph_2)
+
+
+
+        self.horizontalLayout_CHART = QtWidgets.QHBoxLayout(self.frame_graphics)
+        self.horizontalLayout_CHART.setObjectName("horizontalLayout_CHART")
+
+        self.horizontalLayout_CHART.setSpacing(0)
+
+        # test data
+        data = np.array([0.7, 0.7, 0.7, 0.8, 0.9, 0.9, 1.5, 1.5, 1.5, 1.5])
+        fig, ax1 = plt.subplots()
+        bins = np.arange(0.6, 1.62, 0.02)
+        n1, bins1, patches1 = ax1.hist(data, bins, alpha=0.6, density=False, cumulative=False)
+        # plot
+        self.plotWidget = FigureCanvas(fig)
+        self.horizontalLayout_CHART.addWidget(self.plotWidget)
+
+        # add toolba
+
+
+
+
+
+
+
+
+        self.horizontalLayout_graph_menu = QtWidgets.QVBoxLayout()
+        self.horizontalLayout_graph_menu.setSpacing(0)
+        self.horizontalLayout_graph_menu.setObjectName("horizontalLayout_graph_menu")
+        self.label_indicator = QtWidgets.QLabel(self.frame_graphics)
+        self.label_indicator.setMinimumSize(QtCore.QSize(0, 35))
+        self.label_indicator.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.label_indicator.setStyleSheet("background-color: rgb(52, 101, 164);\n"
+                                           "border: 1px solid;")
+        self.label_indicator.setObjectName("label_indicator")
+        self.horizontalLayout_graph_menu.addWidget(self.label_indicator)
+        self.frame_graph_indicator = QtWidgets.QFrame(self.frame_graphics)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_graph_indicator.sizePolicy().hasHeightForWidth())
+        self.frame_graph_indicator.setSizePolicy(sizePolicy)
+        self.frame_graph_indicator.setStyleSheet("QFrame {\n"
+                                                 "border: 1px solid;\n"
+                                                 "}")
+        self.frame_graph_indicator.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_graph_indicator.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_graph_indicator.setObjectName("frame_graph_indicator")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.frame_graph_indicator)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.checkBox_main = QtWidgets.QCheckBox(self.frame_graph_indicator)
+        self.checkBox_main.setObjectName("checkBox_main")
+        self.verticalLayout_11.addWidget(self.checkBox_main)
+        self.checkBox_budget = QtWidgets.QCheckBox(self.frame_graph_indicator)
+        self.checkBox_budget.setObjectName("checkBox_budget")
+        self.verticalLayout_11.addWidget(self.checkBox_budget)
+        self.checkBox_paid = QtWidgets.QCheckBox(self.frame_graph_indicator)
+        self.checkBox_paid.setObjectName("checkBox_paid")
+        self.verticalLayout_11.addWidget(self.checkBox_paid)
+        self.horizontalLayout_graph_menu.addWidget(self.frame_graph_indicator)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.horizontalLayout_graph_menu.addItem(spacerItem)
+        self.lbl_update_GPA = QtWidgets.QLabel(self.frame_graphics)
+        self.lbl_update_GPA.setMinimumSize(QtCore.QSize(0, 35))
+        self.lbl_update_GPA.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.lbl_update_GPA.setStyleSheet("background-color: rgb(52, 101, 164);\n"
+                                          "border: 1px solid;\n"
+                                          "")
+        self.lbl_update_GPA.setObjectName("lbl_update_GPA")
+        self.horizontalLayout_graph_menu.addWidget(self.lbl_update_GPA)
+        self.btn_graph_update = QtWidgets.QPushButton(self.frame_graphics)
+        self.btn_graph_update.setMinimumSize(QtCore.QSize(0, 35))
+        self.btn_graph_update.setMaximumSize(QtCore.QSize(16777215, 35))
+        self.btn_graph_update.setStyleSheet("QPushButton {\n"
+                                            "    color: rgb(255, 255, 255);\n"
+                                            "    background-color: rgb(35, 35, 35);\n"
+                                            "    border: 0px solid;\n"
+                                            "}\n"
+                                            "QPushButton:hover {\n"
+                                            "    background-color: rgb(85, 170, 255);\n"
+                                            "}")
+        self.btn_graph_update.setObjectName("btn_graph_update")
+        self.horizontalLayout_graph_menu.addWidget(self.btn_graph_update)
+        self.horizontalLayout_CHART.addLayout(self.horizontalLayout_graph_menu)
         self.verticalLayout_8.addWidget(self.frame_graphics)
         self.frame_graph_btn = QtWidgets.QFrame(self.page_graph)
         self.frame_graph_btn.setMinimumSize(QtCore.QSize(0, 0))
@@ -1974,10 +2094,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.addWidget(self.btn_graph_report)
         self.verticalLayout_8.addWidget(self.frame_graph_btn, 0, QtCore.Qt.AlignRight)
         self.Pages_Widget.addWidget(self.page_graph)
+
+
+
+
+
+
+
         self.verticalLayout_5.addWidget(self.Pages_Widget)
         self.horizontalLayout_2.addWidget(self.frame_pages)
         self.verticalLayout.addWidget(self.Content)
         MainWindow.setCentralWidget(self.centralwidget)
+
 
         self.retranslateUi(MainWindow)
         self.Pages_Widget.setCurrentIndex(0)
@@ -1994,13 +2122,12 @@ class Ui_MainWindow(object):
         self.le_grade_point_averag_budget9.setPlaceholderText(_translate("MainWindow", "؊"))
         self.lbl_top50.setText(_translate("MainWindow",
                                           "Количество студентов, соответствующих списку топ 50 наиболее востребованных профессий"))
-        self.lbl_title1.setText(_translate("MainWindow", "№\n"
-                                                         "п/п"))
+        self.lbl_title1.setText(_translate("MainWindow", "<b>№<br>п/п<b>"))
         self.lbl_count_stud_fulltime.setText(_translate("MainWindow", "Количество студентов очного отделения"))
         self.lbl_num_5.setText(_translate("MainWindow",
                                           "<html><head/><body><p><span style=\" font-weight:400;\">1.5</span></p></body></html>"))
         self.le_count_stud_parttime.setPlaceholderText(_translate("MainWindow", "100"))
-        self.lbl_title2.setText(_translate("MainWindow", "Наименвование показателя"))
+        self.lbl_title2.setText(_translate("MainWindow", "<b>Наименвование показателя<b>"))
         self.lbl_num_1_6.setText(_translate("MainWindow",
                                             "<html><head/><body><p><span style=\" font-weight:400;\">1.1.6</span></p></body></html>"))
         self.le_grade_point_averag_paid11.setPlaceholderText(_translate("MainWindow", "؊"))
@@ -2032,7 +2159,7 @@ class Ui_MainWindow(object):
         self.lbl_count_stud.setText(_translate("MainWindow", "Общая численность студентов"))
         self.lbl_grade_point_averag_paid11.setText(_translate("MainWindow",
                                                               "<html><head/><body><p>Средний балл аттестата об <span style=\" text-decoration: underline;\">среднем</span> общем образовании и результатов отбора студентов, принятых на обучение по очной форме обучения(платники) </p></body></html>"))
-        self.lbl_title3.setText(_translate("MainWindow", "Значение показателя"))
+        self.lbl_title3.setText(_translate("MainWindow", "<b>Значение показателя<b>"))
         self.lbl_num_6.setText(_translate("MainWindow",
                                           "<html><head/><body><p><span style=\" font-weight:400;\">1.5.1</span></p></body></html>"))
         self.le_count_stud_absentia.setPlaceholderText(_translate("MainWindow", "100"))
@@ -2049,10 +2176,9 @@ class Ui_MainWindow(object):
         self.le_count_stud_fulltime.setPlaceholderText(_translate("MainWindow", "100"))
         self.btn_input_save.setText(_translate("MainWindow", "Сохранить"))
         self.btn_input_next.setText(_translate("MainWindow", "Далее"))
-        self.lbl_title1_2.setText(_translate("MainWindow", "№\n"
-                                                           "п/п"))
-        self.lbl_title2_2.setText(_translate("MainWindow", "Наименвование показателя"))
-        self.lbl_title3_2.setText(_translate("MainWindow", "Значение показателя"))
+        self.lbl_title1_2.setText(_translate("MainWindow", "<b>№<br>п/п<b>"))
+        self.lbl_title2_2.setText(_translate("MainWindow", "<b>Наименвование показателя<b>"))
+        self.lbl_title3_2.setText(_translate("MainWindow", "<b>Значение показателя<b>"))
         self.lbl_num1_1.setText(_translate("MainWindow",
                                            "<html><head/><body><p><span style=\" font-weight:400;\">1.1</span></p></body></html>"))
         self.lbl_count_stud_2.setText(_translate("MainWindow", "Общая численность студентов"))
@@ -2099,6 +2225,14 @@ class Ui_MainWindow(object):
         self.lo_GPA_paid11.setText(_translate("MainWindow", "؊"))
         self.btn_output_back.setText(_translate("MainWindow", "Назад"))
         self.btn_output_next.setText(_translate("MainWindow", "Далее"))
+
+        # Graphic Page
+        self.label_indicator.setText(_translate("MainWindow", "<b>Показать на графике:<b>"))
+        self.checkBox_main.setText(_translate("MainWindow", "Средний балл"))
+        self.checkBox_budget.setText(_translate("MainWindow", "Бюджетники"))
+        self.checkBox_paid.setText(_translate("MainWindow", "Платники"))
+        self.lbl_update_GPA.setText(_translate("MainWindow", "Обовить средний балл"))
+        self.btn_graph_update.setText(_translate("MainWindow", "Обновить"))
         self.btn_graph_back.setText(_translate("MainWindow", "Назад"))
         self.btn_graph_report.setText(_translate("MainWindow", "Отчет"))
 
@@ -2165,13 +2299,6 @@ class Ui_MainWindow(object):
         self.le_grade_point_averag_budget9.setValidator(validator_double)
         self.le_grade_point_averag_paid11.setValidator(validator_double)
         self.le_grade_point_averag_budget11.setValidator(validator_double)
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":

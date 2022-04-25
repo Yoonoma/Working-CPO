@@ -196,7 +196,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Отчет"))
+        Dialog.setWindowTitle(_translate("Dialog", "Создание отчета"))
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("Dialog", "1"))
