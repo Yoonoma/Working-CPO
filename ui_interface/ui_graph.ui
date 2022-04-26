@@ -545,7 +545,7 @@ QPushButton:hover {
              <string notr="true">background-color: rgb(114, 159, 207);</string>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="page_input">
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -718,19 +718,6 @@ border: 1px solid;
                     </widget>
                    </item>
                    <item>
-                    <spacer name="verticalSpacer">
-                     <property name="orientation">
-                      <enum>Qt::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
                     <widget class="QLabel" name="lbl_update_GPA">
                      <property name="minimumSize">
                       <size>
@@ -752,6 +739,53 @@ border: 1px solid;
                      <property name="text">
                       <string>Обовить средний балл</string>
                      </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QTableWidget" name="tableWidget">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>-1</pointsize>
+                       <weight>50</weight>
+                       <italic>false</italic>
+                       <bold>false</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">font: 12px;</string>
+                     </property>
+                     <property name="frameShape">
+                      <enum>QFrame::NoFrame</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Plain</enum>
+                     </property>
+                     <row>
+                      <property name="text">
+                       <string>034</string>
+                      </property>
+                     </row>
+                     <row>
+                      <property name="text">
+                       <string>23</string>
+                      </property>
+                     </row>
+                     <column>
+                      <property name="text">
+                       <string>Код</string>
+                      </property>
+                     </column>
+                     <column>
+                      <property name="text">
+                       <string>Специальность</string>
+                      </property>
+                     </column>
                     </widget>
                    </item>
                    <item>

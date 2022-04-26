@@ -4,21 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e411b7a3-5c05-4b9f-b4fe-63c7725e6f48" name="Changes" comment="excel">
-      <change afterPath="$PROJECT_DIR$/case.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui_report.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ui_report.ui" afterDir="false" />
+    <list default="true" id="e411b7a3-5c05-4b9f-b4fe-63c7725e6f48" name="Changes" comment="V1.5">
+      <change afterPath="$PROJECT_DIR$/output/canvas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui_interface/ui_graphVV.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/work.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/work.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo.docx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo.xlsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/chart.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/graphics.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output/ui_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/output/ui_report.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/poetry.lock" beforeDir="false" afterPath="$PROJECT_DIR$/poetry.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/help.png" beforeDir="false" afterPath="$PROJECT_DIR$/res/help.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/res/help_center_FILL0_wght400_GRAD0_opsz48.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_interface/ui_graph.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui_interface/ui_graph.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui_interface/ui_main_v2.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui_interface/ui_main_v2.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ui_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/ui_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui_main_v2.ui" beforeDir="false" afterPath="$PROJECT_DIR$/ui_main_v2.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,11 +67,20 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;last_opened_file_path&quot;: &quot;/home/yaroslove/python/work&quot;
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/yaroslove/python/work&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.report">
-    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/ui_interface" />
+      <recent name="$PROJECT_DIR$/output" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="chart" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="work" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -74,11 +88,32 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/.cache/pypoetry/virtualenvs/work-ReuArTjR-py3.9/lib/python3.9/site-packages/aspose" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/output" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/.cache/pypoetry/virtualenvs/work-ReuArTjR-py3.9/lib/python3.9/site-packages/aspose/__init__.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/output/chart.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="graphics_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="work" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/output/graphics_test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -116,32 +151,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/output" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/report.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="work" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/output/report.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -179,11 +193,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/output" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ui_report.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/output/ui_report.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,11 +208,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.report" />
-        <item itemvalue="Python.__init__" />
         <item itemvalue="Python.ui_report" />
+        <item itemvalue="Python.graphics_test" />
         <item itemvalue="Python.ui_main" />
-        <item itemvalue="Python.test" />
+        <item itemvalue="Python.chart" />
+        <item itemvalue="Python.report" />
       </list>
     </recent_temporary>
   </component>
@@ -232,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649677025308</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="V1.5">
+      <created>1650454584404</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1650454584404</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -263,6 +284,7 @@
     <MESSAGE value="1.За порт на windows" />
     <MESSAGE value="1.4 новый интерфейс" />
     <MESSAGE value="1.5 exe" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.5 exe" />
+    <MESSAGE value="V1.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="V1.5" />
   </component>
 </project>

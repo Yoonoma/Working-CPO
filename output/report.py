@@ -1,10 +1,9 @@
 import os
-import sys
 
-from PyQt5.QtWidgets import QApplication, QWidget, QFileDialog, QMessageBox, QTableWidgetItem
+from PyQt5.QtWidgets import QWidget, QFileDialog, QMessageBox, QTableWidgetItem
 from docx.shared import Cm, Pt
 
-from ui_report import Ui_Dialog
+from .ui_report import Ui_DialogReport
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Side, Border, Font
@@ -14,7 +13,7 @@ import docx
 class ReportWindow(QWidget):
     def __init__(self, data_table):
         super(ReportWindow, self).__init__()
-        self.ui = Ui_Dialog()
+        self.ui = Ui_DialogReport()
         self.ui.setupUi(self)
 
         self.dir = ''
@@ -172,11 +171,3 @@ class ReportWindow(QWidget):
         msgBox.exec()
 
 
-def main():
-    app = QApplication(sys.argv)
-    ex = ReportWindow()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()

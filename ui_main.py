@@ -1,11 +1,8 @@
-import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QRegExp
 from PyQt5.QtGui import QIntValidator, QRegExpValidator, QPixmap
-from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PyQt5.QtCore import Qt
+
+from output.canvas import MplCanvas
 
 import resource_rc
 
@@ -284,16 +281,16 @@ class Ui_MainWindow(object):
         font.setFamily("Arial")
         self.btn_help.setFont(font)
         self.btn_help.setStyleSheet("QPushButton {\n"
-                                     "    background-color: rgba(255, 255, 255, 0);\n"
-                                     "    border: none;\n"
-                                     "}\n"
-                                     "QPushButton:hover {\n"
-                                     "    background-color: rgb(85, 170, 255);\n"
-                                     "}")
+                                    "    background-color: rgba(255, 255, 255, 0);\n"
+                                    "    border: none;\n"
+                                    "}\n"
+                                    "QPushButton:hover {\n"
+                                    "    background-color: rgb(85, 170, 255);\n"
+                                    "}")
         self.btn_help.setText("")
         icon5 = QtGui.QIcon()
-        self.pixmap         = QPixmap("LightOff.png")
-        icon5.addPixmap(QtGui.QPixmap("../res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.pixmap = QPixmap("LightOff.png")
+        icon5.addPixmap(QtGui.QPixmap("res/help.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_help.setIcon(icon5)
         self.btn_help.setIconSize(QtCore.QSize(64, 64))
         self.btn_help.setObjectName("btn_help")
@@ -318,12 +315,6 @@ class Ui_MainWindow(object):
         self.btn_close.setIconSize(QtCore.QSize(64, 64))
         self.btn_close.setObjectName("btn_close")
         self.verticalLayout_9.addWidget(self.btn_close)
-
-
-
-
-
-
 
         self.verticalLayout_3.addWidget(self.frame_close, 0, QtCore.Qt.AlignBottom)
         self.horizontalLayout_2.addWidget(self.frame_left_menu)
@@ -1353,7 +1344,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setSpacing(0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.frame_top_output = QtWidgets.QFrame(self.page_output)
-        self.frame_top_output.setStyleSheet("")
         self.frame_top_output.setFrameShape(QtWidgets.QFrame.Panel)
         self.frame_top_output.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_top_output.setObjectName("frame_top_output")
@@ -1942,7 +1932,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.addWidget(self.frame_output_btn, 0, QtCore.Qt.AlignRight)
         self.Pages_Widget.addWidget(self.page_output)
 
-
         ## Graphic Page
 
         self.page_graph = QtWidgets.QWidget()
@@ -1965,35 +1954,19 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame_graphics.sizePolicy().hasHeightForWidth())
         self.frame_graphics.setSizePolicy(sizePolicy)
-        self.frame_graphics.setStyleSheet("")
         self.frame_graphics.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_graphics.setFrameShadow(QtWidgets.QFrame.Plain)
         self.frame_graphics.setObjectName("frame_graphics")
 
+        # Создаем пустой холст
 
+        self.Layout_CHART = QtWidgets.QHBoxLayout(self.frame_graphics)
+        self.Layout_CHART.setObjectName("Layout_CHART")
+        self.Layout_CHART.setSpacing(0)
 
-        self.horizontalLayout_CHART = QtWidgets.QHBoxLayout(self.frame_graphics)
-        self.horizontalLayout_CHART.setObjectName("horizontalLayout_CHART")
+        self.sc = MplCanvas(self, width=9.55, height=4, dpi=100)
 
-        self.horizontalLayout_CHART.setSpacing(0)
-
-        # test data
-        data = np.array([0.7, 0.7, 0.7, 0.8, 0.9, 0.9, 1.5, 1.5, 1.5, 1.5])
-        fig, ax1 = plt.subplots()
-        bins = np.arange(0.6, 1.62, 0.02)
-        n1, bins1, patches1 = ax1.hist(data, bins, alpha=0.6, density=False, cumulative=False)
-        # plot
-        self.plotWidget = FigureCanvas(fig)
-        self.horizontalLayout_CHART.addWidget(self.plotWidget)
-
-        # add toolba
-
-
-
-
-
-
-
+        self.Layout_CHART.addWidget(self.sc)
 
         self.horizontalLayout_graph_menu = QtWidgets.QVBoxLayout()
         self.horizontalLayout_graph_menu.setSpacing(0)
@@ -2029,8 +2002,33 @@ class Ui_MainWindow(object):
         self.checkBox_paid.setObjectName("checkBox_paid")
         self.verticalLayout_11.addWidget(self.checkBox_paid)
         self.horizontalLayout_graph_menu.addWidget(self.frame_graph_indicator)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.horizontalLayout_graph_menu.addItem(spacerItem)
+
+        # Таблица
+        self.table_chart_info = QtWidgets.QTableWidget()
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.table_chart_info.sizePolicy().hasHeightForWidth())
+        self.table_chart_info.setSizePolicy(sizePolicy)
+        self.table_chart_info.setStyleSheet("background-color: rgb(238, 238, 236);\n"
+                                       "")
+        self.table_chart_info.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.table_chart_info.setAutoScroll(True)
+        self.table_chart_info.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.table_chart_info.setDragEnabled(False)
+        self.table_chart_info.setShowGrid(True)
+        self.table_chart_info.setGridStyle(QtCore.Qt.SolidLine)
+        self.table_chart_info.setWordWrap(True)
+        self.table_chart_info.setCornerButtonEnabled(True)
+        self.table_chart_info.setObjectName("table_chart_info")
+        self.table_chart_info.setColumnCount(2)
+        self.table_chart_info.setRowCount(21)
+
+        self.horizontalLayout_graph_menu.addWidget(self.table_chart_info)
+
+
+
+
         self.lbl_update_GPA = QtWidgets.QLabel(self.frame_graphics)
         self.lbl_update_GPA.setMinimumSize(QtCore.QSize(0, 35))
         self.lbl_update_GPA.setMaximumSize(QtCore.QSize(16777215, 16777215))
@@ -2052,7 +2050,7 @@ class Ui_MainWindow(object):
                                             "}")
         self.btn_graph_update.setObjectName("btn_graph_update")
         self.horizontalLayout_graph_menu.addWidget(self.btn_graph_update)
-        self.horizontalLayout_CHART.addLayout(self.horizontalLayout_graph_menu)
+        self.Layout_CHART.addLayout(self.horizontalLayout_graph_menu)
         self.verticalLayout_8.addWidget(self.frame_graphics)
         self.frame_graph_btn = QtWidgets.QFrame(self.page_graph)
         self.frame_graph_btn.setMinimumSize(QtCore.QSize(0, 0))
@@ -2095,17 +2093,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.addWidget(self.frame_graph_btn, 0, QtCore.Qt.AlignRight)
         self.Pages_Widget.addWidget(self.page_graph)
 
-
-
-
-
-
-
         self.verticalLayout_5.addWidget(self.Pages_Widget)
         self.horizontalLayout_2.addWidget(self.frame_pages)
         self.verticalLayout.addWidget(self.Content)
         MainWindow.setCentralWidget(self.centralwidget)
-
 
         self.retranslateUi(MainWindow)
         self.Pages_Widget.setCurrentIndex(0)

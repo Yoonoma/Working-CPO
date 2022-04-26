@@ -146,7 +146,7 @@ border: 0px solid;</string>
              <string>Меню</string>
             </property>
             <property name="icon">
-             <iconset resource="resource.qrc">
+             <iconset resource="../resource.qrc">
               <normaloff>:/icons/res/menu.png</normaloff>:/icons/res/menu.png</iconset>
             </property>
            </widget>
@@ -313,7 +313,7 @@ QPushButton:hover {
                 <string>Ввод</string>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
+                <iconset resource="../resource.qrc">
                  <normaloff>:/icons/res/edit.png</normaloff>:/icons/res/edit.png</iconset>
                </property>
               </widget>
@@ -347,7 +347,7 @@ QPushButton:hover {
                 <string>Вывод</string>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
+                <iconset resource="../resource.qrc">
                  <normaloff>:/icons/res/output.png</normaloff>:/icons/res/output.png</iconset>
                </property>
                <property name="checkable">
@@ -390,7 +390,7 @@ QPushButton:hover {
                 <string>График</string>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
+                <iconset resource="../resource.qrc">
                  <normaloff>:/icons/res/graph.png</normaloff>:/icons/res/graph.png</iconset>
                </property>
               </widget>
@@ -430,7 +430,7 @@ QPushButton:hover {
                 <string>Excel</string>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
+                <iconset resource="../resource.qrc">
                  <normaloff>:/icons/res/excel.png</normaloff>:/icons/res/excel.png</iconset>
                </property>
               </widget>
@@ -487,7 +487,7 @@ QPushButton:hover {
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resource.qrc">
+                <iconset resource="../resource.qrc">
                  <normaloff>:/icons/res/close_white.png</normaloff>:/icons/res/close_white.png</iconset>
                </property>
                <property name="iconSize">
@@ -4188,7 +4188,7 @@ QPushButton:hover {
   </widget>
  </widget>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="../resource.qrc"/>
  </resources>
  <connections/>
 </ui>
