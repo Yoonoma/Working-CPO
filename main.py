@@ -23,30 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ErrorProportion = False
 
         self.msg_text = ''
-        self.data_chart = pd.DataFrame({
-            'group': ['main', 'budget', 'paid'],
-            '09.02.03': [4.2, 4.2, 2],
-            '09.02.04': [5, 3.7, 2],
-            '10.02.01': [3.9, 4.6, 4],
-            '11.02.04': [4.4, 3.8, 2.3],
-            'var5': [4.8, 3.6, 3.3],
-            'var6': [4.8, 4.8, 3.3],
-            'var7': [4.8, 4.5, 3.3],
-            'var8': [4.9, 4.6, 3.3],
-            'var9': [4.4, 4.3, 3.3],
-            'var10': [4.8, 3.9, 3.3],
-            'var11': [4.5, 4.5, 3.3],
-            'var12': [4.8, 3.5, 3.3],
-            'var13': [4.8, 4.7, 3.3],
-            'var14': [4.8, 4.4, 3.3],
-            'var15': [4.1, 4.5, 3.3],
-            'var16': [4.2, 3.9, 3.3],
-            'var17': [4.1, 3.7, 3.3],
-            'var18': [4.8, 3.9, 3.3],
-            'var19': [4.3, 4.6, 3.3],
-            'var20': [4.8, 4.6, 3.3],
-            'var21': [4.4, 4.5, 3.3]
-        })
+        # self.ui.lbl_text_GPA[i].split()[:1][0]  pd.DataFrame
 
         self.CountErrorInput = 0
 
@@ -90,16 +67,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.btn_output_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_input))
 
         # PAGE 3
-        self.ui.btn_graph_back.clicked.connect(lambda: self.ui.Pages_Widget.setCurrentWidget(self.ui.page_output))
-
-        # TEST
-        #self.ui.Pages_Widget.setCurrentWidget(self.ui.page_graph)
-        #self.ui.checkBox_main.setChecked(1)
-        #self.ui.checkBox_budget.setChecked(1)
-        #self.ui.checkBox_paid.setChecked(1)
-
-
-        #self.chart_create()
+        self.ui.btn_graph_back.clicked.connect(self.chart_create)
         self.ui.btn_graph_update.clicked.connect(self.chart_create)
 
         # Exit
@@ -340,60 +308,72 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # График
     def chart_create(self):
-        # Очищаем наш холст
-        self.ui.sc.axes.cla()
-        # Статус чекбоксов
-        state = []
-        # Цвета паутин
-        color = ['#429bf4', 'green', 'r']
-        # Инициализируем имена точек
-        categories = list(self.data_chart)[1:]
-        N = len(categories)
-        # Устанавливаем угол осей для нашего графика
-        angles = [n / float(N) * 2 * pi for n in range(N)]
-        angles += angles[:1]
+        if self.FlagSave:
+            data_chart = {'group': ['Корреляция', 'Бюджетники', 'Платники']}
+            overall_GPA = (self.GPA_paid9 + self.GPA_budget9 ) / 2
 
-        # Устанавливаем заголовок графику
-        self.ui.sc.axes.set_title("Проходной балл на бюджет", position=(0.5, 1.1), ha='center')
-        # Корректируем оси графика
-        self.ui.sc.axes.set_theta_offset(pi / 2.7)
-        self.ui.sc.axes.set_theta_direction(-1)
-        # Устанавливаем границы радиус
-        self.ui.sc.axes.set_ylim(-0.1, 5.5)
-        # Устанавливаем тики на графике
-        self.ui.sc.axes.set_rlabel_position(0)
-        self.ui.sc.axes.set_xticks(angles[:-1], categories, color='#222222', size=12)
-        self.ui.sc.axes.set_yticks(np.arange(1, 6), ['1', '2', '3', '4', '5'],
-                                   color='black', size=12)
+            for i in range(len(self.ui.lbl_text_GPA)):
+                key = self.ui.lbl_text_GPA[i].split()[:1][0]
+                value = [overall_GPA, float(self.ui.mas_GPA_budget9[i].text()), float(self.ui.mas_GPA_paid9[i].text())]
+                data_chart.update({key: value})
+            data_chart = pd.DataFrame(data_chart)
 
-        # Проверяем чекбосы
-        if self.ui.checkBox_main.isChecked():
-            state.append(0)
-        if self.ui.checkBox_budget.isChecked():
-            state.append(1)
-        if self.ui.checkBox_paid.isChecked():
-            state.append(2)
+            # Очищаем наш холст
+            self.ui.sc.axes.cla()
+            # Статус чекбоксов
+            state = []
+            # Цвета паутин
+            color = ['#429bf4', 'green', 'r']
+            # Инициализируем имена точек
+            categories = list(data_chart)[1:]
+            N = len(categories)
+            # Устанавливаем угол осей для нашего графика
+            angles = [n / float(N) * 2 * pi for n in range(N)]
+            angles += angles[:1]
 
-        # Создаем DataFrame
-        for i in state:
-            values = self.data_chart.loc[i].values.flatten().tolist()
-            name_label = values[0]
-            values = values[1:] + values[1:2]
+            # Устанавливаем заголовок графику
+            self.ui.sc.axes.set_title("Проходной балл на бюджет", position=(0.5, 1.1), ha='center')
+            # Корректируем оси графика
+            self.ui.sc.axes.set_theta_offset(pi / 2.7)
+            self.ui.sc.axes.set_theta_direction(-1)
+            # Устанавливаем границы радиус
+            self.ui.sc.axes.set_ylim(-0.1, 5.5)
+            # Устанавливаем тики на графике
+            self.ui.sc.axes.set_rlabel_position(0)
+            self.ui.sc.axes.set_xticks(angles[:-1], categories, color='#222222', size=12)
+            self.ui.sc.axes.set_yticks(np.arange(1, 6), ['1', '2', '3', '4', '5'],
+                                       color='black', size=12)
 
-            self.ui.sc.axes.plot(angles, values, '.-', color=color[i], linewidth=1, label=name_label)
-            self.ui.sc.axes.fill(angles, values, color=color[i], alpha=0.1)
+            # Проверяем чекбосы
+            if self.ui.checkBox_main.isChecked():
+                state.append(0)
+            if self.ui.checkBox_budget.isChecked():
+                state.append(1)
+            if self.ui.checkBox_paid.isChecked():
+                state.append(2)
 
-        # Устанавливаем легенду для графика
-        self.ui.sc.axes.legend(fontsize=10,
-                               ncol=3,  # количество столбцов
-                               facecolor='white',  # цвет области
-                               edgecolor='r',  # цвет крайней линии
-                               title='Легенда',  # заголовок
-                               title_fontsize='13',  # размер шрифта заголовка
-                               loc='best', bbox_to_anchor=(0.89, 0.6, 0.5, 0.5)
-                               )
-        # Рисуем график
-        self.ui.sc.draw()
+            # Создаем DataFrame
+            for i in state:
+                values = data_chart.loc[i].values.flatten().tolist()
+                name_label = values[0]
+                values = values[1:] + values[1:2]
+
+                self.ui.sc.axes.plot(angles, values, '.-', color=color[i], linewidth=1, label=name_label)
+                self.ui.sc.axes.fill(angles, values, color=color[i], alpha=0.1)
+
+            # Устанавливаем легенду для графика
+            self.ui.sc.axes.legend(fontsize=10,
+                                   ncol=1,  # количество столбцов
+                                   facecolor='white',  # цвет области
+                                   edgecolor='r',  # цвет крайней линии
+                                   title='Легенда',  # заголовок
+                                   title_fontsize='13',  # размер шрифта заголовка
+                                   bbox_to_anchor=(0.85, 0.6, 0.5, 0.5)
+                                   )
+            # Рисуем график
+            self.ui.sc.draw()
+        else:
+            self.showDialogError("Ошибка: Данные не сохранены.")
 
     # Помощь
     '''Доп'''
